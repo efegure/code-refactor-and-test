@@ -47,7 +47,7 @@ export class CodeRefactorFrontEnd {
       process: (product: Item) => {
         product.quality = Math.max(
           0,
-          product.quality - (product.sellIn > 0 ? 1 : 2),
+          product.quality - (product.sellIn > 0 ? 2 : 4),
         );
         product.sellIn -= 1;
       },

@@ -4,6 +4,11 @@ describe("CodeRefactorFrontEnd", () => {
   // ============================================
   // ÖRNEK TEST - Bu testi düzeltmeniz gerekiyor
   // ============================================
+  it("constructor should handle empty case", () => {
+    const codeRefactor = new CodeRefactorFrontEnd();
+    expect(codeRefactor.items).toHaveLength(0); // Bu değeri düzeltin
+  });
+
   it("should decrease quality by 1 for normal items", () => {
     const codeRefactor = new CodeRefactorFrontEnd([
       new Item("Normal Item", 10, 20),
@@ -16,47 +21,219 @@ describe("CodeRefactorFrontEnd", () => {
   // NORMAL ÜRÜN TESTLERİ
   // ============================================
   describe("Normal Items", () => {
-    it.todo("should decrease sellIn by 1 each day");
-    it.todo("should decrease quality by 1 each day");
-    it.todo("should decrease quality twice as fast after sellIn date passes");
-    it.todo("should never have negative quality");
+    it("should decrease sellIn by 1 each day", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item("Normal Item", 10, 20),
+      ]);
+      const items = codeRefactor.updateQuality();
+      expect(items[0].sellIn).toBe(9);
+    });
+    it("should decrease quality by 1 each day", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item("Normal Item", 10, 20),
+      ]);
+      const items = codeRefactor.updateQuality();
+      expect(items[0].sellIn).toBe(9);
+    });
+    it("should decrease quality twice as fast after sellIn date passes", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item("Normal Item", 2, 20),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 3; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(16);
+    });
+    it("should never have negative quality", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item("Normal Item", 2, 4),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 4; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(0);
+    });
   });
 
   // ============================================
   // VINTAGE FRAMEWORK TESTLERİ
   // ============================================
   describe("Vintage Framework", () => {
-    it.todo("should increase quality as it gets older");
-    it.todo("should never have quality more than 50");
-    it.todo("should increase quality twice as fast after sellIn date");
+    it("should increase quality as it gets older", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item("Vintage Framework", 10, 10),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 5; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(15);
+    });
+    it("should never have quality more than 50", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item("Vintage Framework", 10, 45),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 5; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(50);
+    });
+    it("should increase quality twice as fast after sellIn date", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item("Vintage Framework", 5, 10),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 10; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(25);
+    });
   });
 
   // ============================================
   // ETERNAL CODE LICENSE TESTLERİ
   // ============================================
   describe("Eternal Code License", () => {
-    it.todo("should never decrease in quality");
-    it.todo("should never change sellIn value");
-    it.todo("should always have quality of 80");
+    it("should never decrease in quality", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item("Eternal Code License", 5, 80),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 10; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(80);
+    });
+    it("should never change sellIn value", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item("Eternal Code License", 5, 10),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 10; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].sellIn).toBe(5);
+    });
+    it("should always have quality of 80", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item("Eternal Code License", 5, 10),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 10; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(80);
+    });
   });
 
   // ============================================
   // CONFERENCE PASS TESTLERİ
   // ============================================
   describe("Conference Pass for DevDays 2025", () => {
-    it.todo("should increase quality by 1 when more than 10 days left");
-    it.todo("should increase quality by 2 when 10 days or less left");
-    it.todo("should increase quality by 3 when 5 days or less left");
-    it.todo("should drop quality to 0 after the conference");
-    it.todo("should never have quality more than 50");
+    const packetName = "Conference Pass for DevDays 2025";
+    it("should increase quality by 1 when more than 10 days left", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item(packetName, 15, 10),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 3; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(13);
+    });
+    it("should increase quality by 2 when 10 days or less left", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item(packetName, 10, 10),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 5; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(20);
+    });
+    it("should increase quality by 3 when 5 days or less left", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item(packetName, 5, 10),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 3; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(19);
+    });
+    it("should drop quality to 0 after the conference", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item(packetName, 5, 10),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 6; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(0);
+    });
+    it("should never have quality more than 50", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item(packetName, 15, 45),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 10; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(50);
+    });
   });
 
   // ============================================
   // DEPRECATED LIBRARY TESTLERİ (YENİ ÖZELLİK)
   // ============================================
   describe("Deprecated Library", () => {
-    it.todo("should decrease quality twice as fast as normal items");
-    it.todo("should decrease quality 4x as fast after sellIn date");
-    it.todo("should never have negative quality");
+    const packetName = "Deprecated Library";
+    it("should decrease quality twice as fast as normal items", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item(packetName, 15, 20),
+      ]);
+
+      const items = codeRefactor.updateQuality();
+
+      expect(items[0].quality).toBe(18);
+    });
+    it("should decrease quality 4x as fast after sellIn date", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item(packetName, 5, 45),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 10; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(15);
+    });
+    it("should never have negative quality", () => {
+      const codeRefactor = new CodeRefactorFrontEnd([
+        new Item(packetName, 15, 15),
+      ]);
+      let items: Item[] = [];
+      for (let i = 0; i < 10; i++) {
+        items = codeRefactor.updateQuality();
+      }
+
+      expect(items[0].quality).toBe(0);
+    });
   });
 });
